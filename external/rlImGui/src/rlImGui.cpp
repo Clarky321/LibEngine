@@ -28,23 +28,25 @@
 *
 **********************************************************************************************/
 //#include "rlImGui.h"
-#include <../../external/rlImGui/includes/rlImGui.h>
+#include <../rlImGui/includes/rlImGui.h>
 
 //#include "imgui_impl_raylib.h"
-#include <../../external/rlImGui/includes/imgui_impl_raylib.h>
+#include <../rlImGui/includes/imgui_impl_raylib.h>
 
 //#include "raylib.h"
 //#include "rlgl.h"
-#include <../../external/raylib/src/raylib.h>
-#include <../../external/raylib/src/rlgl.h>
+#include <../raylib/src/raylib.h>
+#include <../raylib/src/rlgl.h>
 
 #include <math.h>
 #include <map>
 #include <limits>
 
-#ifndef NO_FONT_AWESOME
-#include "extras/FA6FreeSolidFontData.h"
-#endif
+//#ifndef NO_FONT_AWESOME
+//#include "extras/FA6FreeSolidFontData.h"
+//#endif
+
+#define NO_FONT_AWESOME
 
 static ImGuiMouseCursor CurrentMouseCursor = ImGuiMouseCursor_COUNT;
 static MouseCursor MouseCursorMap[ImGuiMouseCursor_COUNT];

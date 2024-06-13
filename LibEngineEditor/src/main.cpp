@@ -1,67 +1,89 @@
 #include <raylib.h>
-//#include <raymath.h>
+#include <raymath.h>
 
-//#include <imgui.h>
-#include <../../external/rlImGui/includes/imgui_impl_raylib.h>
-#include <../../external/rlImGui/includes/rlImGui.h>
+#include <imgui.h>
+#include <../rlImGui/includes/rlImGui.h>
 
-int main(void)
+int main(int argc, char* argv[])
 {
-    // Initialization
-    //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+	// Initialization
+	//--------------------------------------------------------------------------------------
+	int screenWidth = 1280;
+	int screenHeight = 800;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera mode");
+	SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+	InitWindow(screenWidth, screenHeight, "raylib-Extras [ImGui] example - Docking");
+	SetTargetFPS(60);
+	rlImGuiSetup(true);
 
-    // Define the camera to look into our 3d world
-    Camera3D camera = { 0 };
-    camera.position = Vector3 { 0.0f, 10.0f, 10.0f };  // Camera position
-    camera.target = Vector3 { 0.0f, 0.0f, 0.0f };      // Camera looking at point
-    camera.up = Vector3 { 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
-    camera.fovy = 45.0f;                                // Camera field-of-view Y
-    camera.projection = CAMERA_PERSPECTIVE;             // Camera mode type
+	bool run = true;
 
-    Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
+	bool showDemoWindow = true;
 
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+	// if the linked ImGui has docking, enable it.
+	// this will only be true if you use the docking branch of ImGui.
+#ifdef IMGUI_HAS_DOCK
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+#endif
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-        //----------------------------------------------------------------------------------
+	// Main game loop
+	while (!WindowShouldClose() && run)    // Detect window close button or ESC key, or a quit from the menu
+	{
+		BeginDrawing();
+		ClearBackground(DARKGRAY);
 
-        // Draw
-        //----------------------------------------------------------------------------------
-        BeginDrawing();
+		// start ImGui content
+		rlImGuiBegin();
 
-        ClearBackground(RAYWHITE);
+		// if you want windows to dock to the viewport, call this.
+#ifdef IMGUI_HAS_DOCK
+		ImGui::DockSpaceOverViewport();
+#endif
 
-        BeginMode3D(camera);
+		// show a simple menu bar
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Quit"))
+					run = false;
 
-        DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
-        DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
+				ImGui::EndMenu();
+			}
 
-        DrawGrid(10, 1.0f);
+			if (ImGui::BeginMenu("Window"))
+			{
+				if (ImGui::MenuItem("Demo Window", nullptr, showDemoWindow))
+					showDemoWindow = !showDemoWindow;
 
-        EndMode3D();
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
 
-        DrawText("Welcome to the third dimension!", 10, 40, 20, DARKGRAY);
+		// show some windows
 
-        DrawFPS(10, 10);
+		if (showDemoWindow)
+			ImGui::ShowDemoWindow(&showDemoWindow);
 
-        EndDrawing();
-        //----------------------------------------------------------------------------------
-    }
+		if (ImGui::Begin("Test Window"))
+		{
+			ImGui::TextUnformatted("Another window");
+		}
+		ImGui::End();
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+		// end ImGui Content
+		rlImGuiEnd();
 
-    return 0;
+		EndDrawing();
+		//----------------------------------------------------------------------------------
+	}
+	rlImGuiShutdown();
+
+	// De-Initialization
+	//--------------------------------------------------------------------------------------   
+	CloseWindow();        // Close window and OpenGL context
+	//--------------------------------------------------------------------------------------
+
+	return 0;
 }

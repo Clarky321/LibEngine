@@ -30,8 +30,11 @@
 
 #pragma once
 
-#include <../../external/raylib/src/raylib.h>
-#include <../../external/cmake-imgui/imgui/imgui.h>
+//#include <../../external/raylib/src/raylib.h>
+//#include <../../external/cmake-imgui/imgui/imgui.h>
+
+#include <../raylib/src/raylib.h>
+#include <../imgui/imgui.h>
 
 namespace rlImGuiColors
 {

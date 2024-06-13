@@ -42,7 +42,8 @@
 
 #pragma once
 //#include "imgui.h"      // IMGUI_IMPL_API
-#include <../../external/cmake-imgui/imgui/imgui.h> // IMGUI_IMPL_API
+#include <../imgui/imgui.h>
+
 #ifndef IMGUI_DISABLE
 
 IMGUI_IMPL_API bool ImGui_ImplRaylib_Init(void);

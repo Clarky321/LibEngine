@@ -64,5 +64,37 @@ add_library(rlImGui STATIC
 )
 
 target_include_directories(rlImGui PUBLIC ../external/rlImGui)
-
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC rlImGui)
+
+# ------------------------------------------------------------------------------------- #
+
+set(IMGUI_INCLUDES
+
+	../external/imgui/imgui.h
+	#../external/imgui/backends/imgui_impl_glfw.h
+	../external/imgui/backends/imgui_impl_opengl3.h
+)
+
+set(IMGUI_SOURCES
+	../external/imgui/imgui.cpp
+	#../external/imgui/backends/imgui_impl_glfw.cpp
+	../external/imgui/backends/imgui_impl_opengl3.cpp
+	
+	../external/imgui/imgui_draw.cpp
+	../external/imgui/imgui_widgets.cpp
+	../external/imgui/imgui_tables.cpp
+	
+	../external/imgui/imgui_demo.cpp
+)
+
+add_library(ImGui STATIC
+	${IMGUI_INCLUDES}
+	${IMGUI_SOURCES}
+)
+
+#target_include_directories(ImGui PUBLIC ../external)
+target_include_directories(ImGui PUBLIC ../external/imgui)
+#target_link_libraries(ImGui PRIVATE glad glfw)
+
+#target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE ImGui)
+target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC ImGui)
